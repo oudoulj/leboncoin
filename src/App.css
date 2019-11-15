@@ -20,3 +20,55 @@
 .App-link {
   color: #09d3ac;
 }
+
+.offerPanel {
+  display: flex;
+  flex-direction: row;
+  margin: 15px;
+  cursor: pointer;
+}
+
+.offerTitlePrice {
+  display: flex;
+  flex-direction: column;
+  /* height: 100%; */
+}
+
+.offerPicture {
+  margin-right: 15px;
+}
+
+.offerTitle {
+  color: navy;
+  font-weight: bold;
+}
+
+.offerPrice {
+  color: orange;
+  font-weight: bold;
+}
+
+.menuLink {
+  color: red;
+  margin-right: 15px;
+}
+
+.offerDetail {
+  display: flex;
+  flex-direction: column;
+}
+
+.offerDetailPictureUsername {
+  display: flex;
+  flex-direction: row;
+}
+
+.avatarBlock {
+  display: flex;
+  flex-direction: row;
+}
+
+.avatarPicture {
+  width: 50px;
+  height: 50px;
+}
