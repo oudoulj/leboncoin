@@ -4,6 +4,7 @@ import "./App.css";
 import logo from "./logo.png";
 import Home from "./containers/Home";
 import Offer from "./containers/Offer";
+import Signup from "./containers/Signup";
 
 function App() {
   return (
@@ -26,14 +27,15 @@ function App() {
           <Link to="/" className="menuLink">
             Offres
           </Link>
-          {/* <Link to="/contact">Contact</Link>
-        <Link to="/about">About</Link> */}
+          <Link to="/Signup" className="menuLink">
+            S'inscrire
+          </Link>
         </nav>
         <div>
           <Route exact path="/" component={Home} />
           <Route path="/offer/:id" component={Offer} />
-          {/* <Route path="/contact" component={ContactPage} />
-        <Route path="/about" component={AboutPage} /> */}
+          <Route path="/signup" component={Signup} />
+          {/*<Route path="/about" component={AboutPage} /> */}
         </div>
       </Router>
     </>
