@@ -4,18 +4,57 @@ import Offer from "./Offer";
 
 const Home = () => {
   const [offres, setOffres] = useState([]);
+  const [searchTitle, setSearchText] = useState("");
 
   useEffect(() => {
     fetch("https://leboncoin-api.herokuapp.com/api/offer/with-count")
       .then(response => response.json())
       .then(data => {
-        console.log(data.offers);
+        //console.log(data.offers);
         setOffres(data.offers);
       });
   }, []);
 
+  const Search = e => {
+    e.preventDefault();
+    console.log("in Search function for", searchTitle);
+    let searchTitleQueryString;
+    if (searchTitle !== null) {
+      searchTitleQueryString = `title=${searchTitle}`;
+      console.log(
+        "build query search",
+        `https://leboncoin-api.herokuapp.com/api/offer/with-count?${searchTitleQueryString}`
+      );
+    }
+    fetch(`https://leboncoin-api.herokuapp.com/api/offer/with-count?${searchTitleQueryString}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setOffres(data.offers);
+      });
+    // https://leboncoin-api.herokuapp.com/api/offer/with-count?title=ordinateur
+  };
+
+  console.log("[In Home component (list of offers)]");
+
   return (
     <div>
+      <form
+        className="searchEngine"
+        onSubmit={e => {
+          Search(e);
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Que recherchez-vous ?"
+          value={searchTitle}
+          onChange={e => {
+            setSearchText(e.target.value);
+          }}
+        />{" "}
+        <button type="submit">Rechercher</button>
+      </form>
       <ul>
         {offres !== null
           ? offres.map(o => (
