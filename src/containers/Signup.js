@@ -1,120 +1,93 @@
 import React from "react";
-import { Formik } from "formik";
-import * as Yup from "yup";
+import { useField, Formik, Form } from "formik";
+import axios from "axios";
+
+const MyTextField = ({ label, ...props }) => {
+  const [field, meta] = useField(props.name);
+  return (
+    <>
+      <label>
+        {label}
+        <input {...field} {...props} />
+      </label>
+      {meta.touched && meta.error ? <div className="error">{meta.error}</div> : null}
+    </>
+  );
+};
 
 const Signup = () => {
+  // const [username] = React.useState(null);
+  // const [email] = React.useState(null);
+  // const [password] = React.useState(null);
+  // {props => {
+  //     const {
+  //       values,
+  //       touched,
+  //       errors,
+  //       dirty,
+  //       isSubmitting,
+  //       handleChange,
+  //       handleBlur,
+  //       handleSubmit,
+  //       handleReset
+  //     } = props;
   return (
-    <Formik
-      initialValues={{ email: "", username: "", password: "" }} //, passwordConfirm: ""
-      onSubmit={async values => {
-        console.log(JSON.stringify(values, null, 2));
-        //await new Promise(resolve => setTimeout(resolve, 500));
-        alert(JSON.stringify(values, null, 2));
-        fetch("https://leboncoin-api.herokuapp.com/api/user/sign_up", {
-          method: "post",
-          body: JSON.stringify(values, null, 2)
-        })
-          .then(function(response) {
-            console.log("response", response);
-            return response.json();
-          })
-          .then(function(data) {
-            console.log("Created Gist:", data.html_url);
-          });
-      }}
-      validationSchema={Yup.object().shape({
-        username: Yup.string().required("Required"),
-        email: Yup.string()
-          .email()
-          .required("Required"),
-        password: Yup.string().required("Required"),
-        passwordConfirm: Yup.string().required("Required")
-      })}
-    >
-      {props => {
-        const {
-          values,
-          touched,
-          errors,
-          dirty,
-          isSubmitting,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          handleReset
-        } = props;
-        return (
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="username" style={{ display: "block" }}>
-              Pseudo
-            </label>
-            <input
-              id="username"
-              placeholder="Enter your pseudo"
-              type="text"
-              value={values.username}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={errors.username && touched.username ? "text-input error" : "text-input"}
-            />
-            {errors.username && touched.username && <div className="input-feedback">{errors.username}</div>}
+    <div>
+      <h1>My Form</h1>
+      <Formik
+        initialValues={{ username: "", email: "toto@toto.fr", password: "" }}
+        onSubmit={(values, actions, event) => {
+          // console.log("[Signup] in Formik's onSubmit", values);
+          // alert(JSON.stringify(values, null, 2));
+          // console.log(values.username, values.email, values.password);
+          // fetch("https://leboncoin-api.herokuapp.com/api/user/sign_up", {
+          //   method: "post",
+          //   // mode: "no-cors",
+          //   //body: JSON.stringify(values, null, 2)
+          //   username: values.username,
+          //   email: values.email,
+          //   password: values.password
+          // })
+          //   .then(function(response) {
+          //     console.log("response", response);
+          //     return response.text();
+          //   })
+          //   .then(function(data) {
+          //     console.log("Created Gist:", data.html_url);
+          //   });
+          axios
+            .post("https://leboncoin-api.herokuapp.com/api/user/sign_up", {
+              username: values.username,
+              email: values.email,
+              password: values.password
+            })
+            .then(response => {
+              console.log(response.data);
+              // if (response.data && response.data.token) {
+              //   this.props.logIn({
+              //     token: response.data.token,
+              //     username: response.data.account.username,
+              //     _id: response.data._id
+              //   });
 
-            <label htmlFor="email" style={{ display: "block" }}>
-              Adresse email
-            </label>
-            <input
-              id="email"
-              placeholder="Enter your email"
-              type="text"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={errors.email && touched.email ? "text-input error" : "text-input"}
-            />
-            {errors.email && touched.email && <div className="input-feedback">{errors.email}</div>}
-
-            <label htmlFor="password" style={{ display: "block" }}>
-              Mot de passe
-            </label>
-            <input
-              id="password"
-              placeholder="Enter your password"
-              type="password"
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={errors.password && touched.password ? "text-input error" : "text-input"}
-            />
-            {errors.password && touched.password && <div className="input-feedback">{errors.password}</div>}
-
-            {/* <label htmlFor="passwordConfirm" style={{ display: "block" }}>
-              Confirmer le mot de passe
-            </label>
-            <input
-              id="passwordConfirm"
-              placeholder="Enter your password again"
-              type="password"
-              value={values.passwordConfirm}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className={errors.passwordConfirm && touched.passwordConfirm ? "text-input error" : "text-input"}
-            />
-            {errors.passwordConfirm && touched.passwordConfirm && (
-              <div className="input-feedback">{errors.passwordConfirm}</div>
-            )} */}
-
-            <button type="button" className="outline" onClick={handleReset} disabled={!dirty || isSubmitting}>
-              Reset
-            </button>
-            <button type="submit" disabled={isSubmitting}>
-              Créer mon compte personnel
-            </button>
-
-            {/* <DisplayFormikState {...props} /> */}
-          </form>
-        );
-      }}
-    </Formik>
+              //   this.props.history.push("/");
+              // }
+            })
+            .catch(err => {
+              console.log(err);
+            });
+          event.preventDefault();
+        }}
+        render={props => (
+          <Form onSubmit={props.handleSubmit}>
+            <MyTextField name="username" type="text" label="User name" />
+            <MyTextField name="email" type="text" label="Email" />
+            <MyTextField name="password" type="password" label="Mot de passe" />
+            <button type="submit">Submit</button>
+          </Form>
+        )}
+      />
+    </div>
   );
 };
 
