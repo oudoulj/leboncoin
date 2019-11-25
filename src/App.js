@@ -4,7 +4,7 @@ import "./App.css";
 import logo from "./logo.png";
 import Home from "./containers/Home";
 import Offer from "./containers/Offer";
-import Signup from "./containers/Signup";
+import Signup2 from "./containers/Signup2";
 
 function App() {
   return (
@@ -34,7 +34,7 @@ function App() {
         <div>
           <Route exact path="/" component={Home} />
           <Route path="/offer/:id" component={Offer} />
-          <Route path="/signup" component={Signup} />
+          <Route path="/signup" component={Signup2} />
           {/*<Route path="/about" component={AboutPage} /> */}
         </div>
       </Router>

@@ -38,7 +38,8 @@ const Signup = () => {
         initialValues={{ username: "", email: "toto@toto.fr", password: "" }}
         onSubmit={(values, actions, event) => {
           // console.log("[Signup] in Formik's onSubmit", values);
-          // alert(JSON.stringify(values, null, 2));
+          console.log("event", event);
+          alert(JSON.stringify(values, null, 2));
           // console.log(values.username, values.email, values.password);
           // fetch("https://leboncoin-api.herokuapp.com/api/user/sign_up", {
           //   method: "post",
@@ -62,7 +63,7 @@ const Signup = () => {
               password: values.password
             })
             .then(response => {
-              console.log(response.data);
+              console.log("Axios success", response.data);
               // if (response.data && response.data.token) {
               //   this.props.logIn({
               //     token: response.data.token,
@@ -74,11 +75,12 @@ const Signup = () => {
               // }
             })
             .catch(err => {
-              console.log(err);
+              console.log("Axios error", err);
             });
-          event.preventDefault();
+          //event.preventDefault();
         }}
-        render={props => (
+      >
+        {props => (
           <Form onSubmit={props.handleSubmit}>
             <MyTextField name="username" type="text" label="User name" />
             <MyTextField name="email" type="text" label="Email" />
@@ -86,7 +88,7 @@ const Signup = () => {
             <button type="submit">Submit</button>
           </Form>
         )}
-      />
+      </Formik>
     </div>
   );
 };

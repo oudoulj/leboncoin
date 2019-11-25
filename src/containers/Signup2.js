@@ -14,10 +14,14 @@ const Signup2 = props => {
         fetch("https://leboncoin-api.herokuapp.com/api/user/sign_up", {
           method: "post",
           // mode: "no-cors",
-          //body: JSON.stringify(values, null, 2)
-          email: this.state.email,
-          password: this.state.password,
-          username: this.state.username
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(values)
+          // username: values.username,
+          // email: values.email,
+          // password: values.password
         })
           .then(function(response) {
             console.log("response", response);
