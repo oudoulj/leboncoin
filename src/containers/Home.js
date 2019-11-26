@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Offer from "./Offer";
+import { BrowserRouter as Link } from "react-router-dom";
+// import Offer from "./Offer";
 
 const Home = () => {
   const [offres, setOffres] = useState([]);

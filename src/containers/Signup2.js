@@ -2,34 +2,56 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-const Signup2 = props => {
+const Signup2 = ({ logIn }) => {
   return (
     <Formik
       initialValues={{ email: "", username: "", password: "" }} //, passwordConfirm: ""
-      onSubmit={values => {
+      onSubmit={async values => {
         console.log("in Formik's onSubmit", values);
         console.log(JSON.stringify(values, null, 2));
         //await new Promise(resolve => setTimeout(resolve, 500));
-        alert(JSON.stringify(values, null, 2));
-        fetch("https://leboncoin-api.herokuapp.com/api/user/sign_up", {
+        //alert(JSON.stringify(values, null, 2));
+        const response = await fetch("https://leboncoin-api.herokuapp.com/api/user/sign_up", {
           method: "post",
-          // mode: "no-cors",
           headers: {
-            Accept: "application/json",
+            //Accept: "application/json",
             "Content-Type": "application/json"
           },
           body: JSON.stringify(values)
           // username: values.username,
           // email: values.email,
           // password: values.password
-        })
-          .then(function(response) {
-            console.log("response", response);
-            return response.text();
-          })
-          .then(function(data) {
-            console.log("Created Gist:", data.html_url);
+        });
+        const myJson = await response.json();
+        console.log("myJson", JSON.stringify(myJson));
+        if (myJson && myJson.token) {
+          //set token here
+          logIn({
+            token: myJson.token,
+            username: myJson.account.username,
+            _id: myJson._id
           });
+        }
+        // .then(response => {
+        //   console.log("response.data", response.data);
+        //   console.log("response.json()", response.json());
+        //   if (response.data && response.data.token) {
+        //     console.log("response.data.token", response.data.token);
+        //     // this.props.logIn({
+        //     //   token: response.data.token,
+        //     //   username: response.data.account.username,
+        //     //   _id: response.data._id
+        //     // });
+
+        //     // this.props.history.push("/");
+        //   }
+        // })
+        // .catch(err => {
+        //   console.log("Axios error", err);
+        // });
+        // .then(function(data) {
+        //   console.log("Created Gist:", data.html_url);
+        // });
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string().required("Required"),

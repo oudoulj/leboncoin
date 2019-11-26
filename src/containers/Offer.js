@@ -10,7 +10,7 @@ const Offer = props => {
         console.log(data);
         setOffer(data);
       });
-  }, []);
+  }, [props.match.params.id]);
 
   return (
     <div>
