@@ -3,9 +3,11 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import "./App.css";
 import Cookies from "js-cookie";
 import logo from "./logo.png";
+import Header from "./components/Header";
 import Home from "./containers/Home";
 import Offer from "./containers/Offer";
 import Signup2 from "./containers/Signup2";
+import SignIn from "./containers/SignIn";
 
 function App() {
   const [user, setUser] = useState({
@@ -41,7 +43,8 @@ function App() {
   return (
     <>
       <Router>
-        <nav>
+        <Header user={user} logOut={logOut}></Header>
+        {/* <nav>
           <Link to="/" className="menuLink">
             <img src={logo} alt="" />
           </Link>
@@ -54,12 +57,14 @@ function App() {
           <Link to="/Signup" className="menuLink">
             S'inscrire
           </Link>
-        </nav>
+          <Link to="/SignIn">Se connecter</Link>
+        </nav> */}
         <div>
           <Route exact path="/" component={Home} />
           <Route path="/offer/:id" component={Offer} />
           <Route path="/signup" render={props => <Signup2 {...props} user={user} logIn={logIn} />} />
           {/*<Route path="/about" component={AboutPage} /> */}
+          <Route path="/signin" render={props => <SignIn {...props} logIn={logIn} />} />
         </div>
       </Router>
     </>

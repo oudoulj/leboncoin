@@ -2,7 +2,9 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-const Signup2 = ({ logIn }) => {
+const Signup2 = props => {
+  //({history,logIn})
+  console.log("props in Signup2", props); //includes props related to Route (history, location, match...) , user and logIn
   return (
     <Formik
       initialValues={{ email: "", username: "", password: "" }} //, passwordConfirm: ""
@@ -26,11 +28,12 @@ const Signup2 = ({ logIn }) => {
         console.log("myJson", JSON.stringify(myJson));
         if (myJson && myJson.token) {
           //set token here
-          logIn({
+          props.logIn({
             token: myJson.token,
             username: myJson.account.username,
             _id: myJson._id
           });
+          props.history.push("/");
         }
         // .then(response => {
         //   console.log("response.data", response.data);
